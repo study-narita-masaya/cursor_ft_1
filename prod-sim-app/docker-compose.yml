@@ -1,0 +1,22 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: prod-sim-app-web
+    volumes:
+      # ホストのプロジェクトディレクトリをコンテナの作業ディレクトリにマウント
+      - .:/usr/src/app
+      # node_modules はコンテナ内のものを使用（ホストとコンテナのOSが異なるため）
+      - /usr/src/app/node_modules
+    ports:
+      # ホスト:コンテナ
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    # 開発サーバー起動用コマンド
+    # コンテナ起動時に自動で開発サーバーを起動する場合は以下のコメントを外してください
+    # command: sh -c "npm install && npm run dev"
+    # 現在は手動で exec して起動する方式です
+    stdin_open: true
+    tty: true
